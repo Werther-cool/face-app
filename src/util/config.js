@@ -1,5 +1,5 @@
-// const APIV1 ="http://192.168.202.02:8057";
-const APIV1 = "http://smart.dtyunxi.com:8057";
+const APIV1 ="http://192.168.202.02:8057";
+// const APIV1 = "http://smart.dtyunxi.com:8057";
 module.exports ={
   api: {
     /* 获取已经根据活动注册用户匹配拍摄头像的数据 */
@@ -13,6 +13,10 @@ module.exports ={
     /* 首页数据 */
     homeGet:`${APIV1}/api/v1/yueyun/event/get`,
     /* 取消关联 */
-    delete:`${APIV1}/api/v1/yueyun/customer/delete`
+    delete:`${APIV1}/api/v1/yueyun/customer/delete`,
+    /* 推送 */
+    pushId:`${APIV1}/api/v1/yueyun/customer/push`,
+     /* 推送全部 */
+     pushAllId:`${APIV1}/api/v1/yueyun/customers/push`,
   }
 }

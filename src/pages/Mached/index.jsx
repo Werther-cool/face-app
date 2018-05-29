@@ -45,9 +45,32 @@ class MathcedTabel extends Component {
       data: qs.stringify({id:id}),
     })
     .then(res => {
-    
       self.getReq()
-
+    });
+  }
+  pushId=(id,record)=>{
+  
+    const self = this;
+    axios({
+      method: 'post',
+      url:`${API.pushId}`,
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: qs.stringify({id:record.id}),
+    })
+    .then(res => {
+      self.getReq()
+    });
+  }
+ 
+  pushAllId=()=>{
+    const self = this;
+    axios({
+      method: 'post',
+      url:`${API.pushAllId}`,
+      headers: { 'content-type': 'application/x-www-form-urlencoded' }
+    })
+    .then(res => {
+      self.getReq()
     });
   }
 
@@ -93,21 +116,23 @@ class MathcedTabel extends Component {
       width:"15%"
     },
     {
-      title:"状态",
-      dataIndex:"status",
+      title:"推送",
+      dataIndex:"is_push",
       key:"status",
       width:"10%",
-      render:()=>(
-        <Icon type="check" style={{ fontSize: 16, color: 'green' }}/>
-      )
+      render:(events,record)=>{
+        return (events?
+          <Icon type="check" style={{ fontSize: 16, color: 'green' }}/>
+          :<Button  type='primary' onClick={this.pushId.bind(this,events,record)}>推送</Button>)
+      } 
     },
     {
       title:"取消关联",
       dataIndex:'id',
       key:"id",
       width:"15%",
-      render:(events)=>{ 
-      return (<Button  type='primary' onClick={this.cancelReq.bind(this,events)}>取消关联</Button>)
+      render:(events,record)=>{ 
+      return (<Button  disabled={record.is_push} type='primary' onClick={this.cancelReq.bind(this,events)}>取消关联</Button>)
         
     }
     }
@@ -116,6 +141,7 @@ class MathcedTabel extends Component {
       <div className="App">
       <Row type="flex" justify="space-between" className="row_top">
         <Col span={2}><Button type="primary" onClick={()=>this.getReq()}>更新</Button></Col>
+        <Col span={2} offset={20}><Button disabled={this.state.matchedList.length==0} type="primary" onClick={()=>this.pushAllId()}>全部推送</Button></Col>
       </Row>
     
        <Table 
