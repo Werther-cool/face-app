@@ -1,0 +1,134 @@
+import React, { Component } from 'react';
+import { Table,Button,Radio,Row,Col,Select,Icon } from 'antd';
+import axios from 'axios';
+import  "./mytable.css";
+import config from "../../util/config";
+import qs from 'qs';
+const API = config.api
+const RadioGroup = Radio.Group;
+const Option = Select.Option;
+
+
+class MathcedTabel extends Component {
+  state = {
+    value: 1,
+    rowIndex:0,
+    myData : [],
+    matchedList:[],
+    time:5
+  }
+  onChange = (e,record) => {
+
+    this.setState({
+      value: e.target.value,
+    });
+  }
+  getReq=()=>{
+    axios.get(`${API.mached}`)
+    .then(res => {
+      let list = res.data.data;
+      list.map((item,idx)=>{
+        item.key = item.id
+      })
+      list=list.reverse()
+  
+      
+      this.setState({ matchedList:list });
+    });
+  }
+  cancelReq=(id)=>{
+    const self = this;
+    axios({
+      method: 'post',
+      url:`${API.delete}`,
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      data: qs.stringify({id:id}),
+    })
+    .then(res => {
+    
+      self.getReq()
+
+    });
+  }
+
+  render() {
+    const columnsMatch = [{
+      title: '姓名',
+      dataIndex: 'user_name',
+      key: 'user_name',
+      width:"10%",
+      render: text => <a href="javascript:;">{text}</a>,
+    }, {
+      title: '手机号码',
+      dataIndex: 'user_phone',
+      key: 'user_phone',
+      width:"10%"
+    }, {
+      title: '照片',
+      dataIndex: 'original_face',
+      key: 'original_face',
+      width:"10%",
+      render:(original_face,record) => ( 
+        <span>
+          <img className="radioimg" src={original_face} alt=""/>
+        </span>
+      )
+    },
+    {
+      title: 'PersonID',
+      dataIndex: 'person_id',
+      key: 'person_id',
+      width:"20%"
+    },
+    {
+      title: '注册时间',
+      dataIndex: 'sign_time',
+      key: 'sign_time',
+      width:"15%"
+    },
+    {
+      title: '最近到访时间',
+      dataIndex: 'last_capture_at',
+      key: 'last_capture_at',
+      width:"15%"
+    },
+    {
+      title:"状态",
+      dataIndex:"status",
+      key:"status",
+      width:"10%",
+      render:()=>(
+        <Icon type="check" style={{ fontSize: 16, color: 'green' }}/>
+      )
+    },
+    {
+      title:"取消关联",
+      dataIndex:'id',
+      key:"id",
+      width:"15%",
+      render:(events)=>{ 
+      return (<Button  type='primary' onClick={this.cancelReq.bind(this,events)}>取消关联</Button>)
+        
+    }
+    }
+  ];
+    return (
+      <div className="App">
+      <Row type="flex" justify="space-between" className="row_top">
+        <Col span={2}><Button type="primary" onClick={()=>this.getReq()}>更新</Button></Col>
+      </Row>
+    
+       <Table 
+       columns={columnsMatch} 
+       dataSource={this.state.matchedList} 
+       />
+      </div>
+    );
+  }
+  componentWillMount (){
+    this.getReq()
+  }
+}
+
+
+export default MathcedTabel;
