@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table,Button,Radio,Row,Col,Select,Icon,TimePicker,DatePicker } from 'antd';
+import { Table,Button,Radio,Row,Col,Select,Icon,TimePicker,DatePicker,Modal } from 'antd';
 import moment from 'moment';
 import axios from 'axios';
 import  "./index.css";
@@ -20,7 +20,9 @@ class MathcedTabel extends Component {
     matchedList:[],
     time:5,
     startTime:"null",
-    endTime:"null"
+    endTime:"null",
+    visible:false,
+    imgSrc:''
   }
   // onChange = (e,record) => {
   //   console.log('radio checked', e,record);
@@ -65,6 +67,15 @@ class MathcedTabel extends Component {
       endTime:timeString
      }) 
   }
+  handleCancel(){
+    this.setState({
+      visible:false
+    })
+  }
+  onSelectChange=(val)=>{
+    console.log(val);
+    
+  }
   render() {
     const columnsMatch = [
       {
@@ -74,7 +85,13 @@ class MathcedTabel extends Component {
         width:"20%",
         render:(original_face,record) => ( 
           <span>
-            <img className="radioimg" src={original_face} alt=""/>
+            <img onClick={()=>{
+              console.log(original_face);
+              this.setState({
+                imgSrc:original_face,
+                visible:true
+              })
+            }} className="radioimg" src={original_face} alt=""/>
           </span>
         )
       },
@@ -89,9 +106,10 @@ class MathcedTabel extends Component {
       key:"show_capture_at",
     }
   ];
+
     return (
       <div className="App">
-      <Row type="flex" justify="space-between" className="row_top">
+      <Row type="flex" justify="space-between" className="row_top" >
         <Col span={2}><Button type="primary" onClick={()=>this.getReq()}>更新</Button></Col>
         <Col span={4} offset={14}>
              <span>起始时间</span>&nbsp;&nbsp;
@@ -117,7 +135,26 @@ class MathcedTabel extends Component {
        <Table 
        columns={columnsMatch} 
        dataSource={this.state.matchedList} 
+      //  onRow={(record, index) => {
+      //   return {
+      //     onClick: (record) => {
+      //       console.log(record);
+            
+      //     },      
+      //   }
+         
+      //  }}
+   
        />
+         <Modal
+          width={'35%'}
+          footer={null}
+          visible={this.state.visible}
+          onCancel={this.handleCancel.bind(this)}
+          style={{textAlign:"center"}}
+        >
+          <img style={{width:"80%",objectFit:"cover"}} src={this.state.imgSrc} alt=""/>
+        </Modal>
       </div>
     );
   }
