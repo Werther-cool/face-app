@@ -68,7 +68,8 @@ class MyTable extends Component {
    let obj = {
     user_name :record.name,
     user_phone :record.phone,
-    sign_time :record.create_time
+    sign_time :record.create_time,
+    open_id:record.open_id
    }
    this.setState({
      visible:true,
@@ -148,20 +149,21 @@ closeModal=()=>{
           </Select>
         </Col> */}
        <Col span={4} offset={14}>
-             <span>起始时间</span>&nbsp;&nbsp;
+            
              <DatePicker
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
-                placeholder="请选择时间"
+                placeholder="请选择起始时间"
                 onChange={this.setTime0.bind(this)}          
               />
+            
         </Col>
         <Col span={4} >
-             <span>终止时间</span>&nbsp;&nbsp;
+           
              <DatePicker
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
-                placeholder="请选择时间"
+                placeholder="请选择终止时间"
                 onChange={this.setTime1.bind(this)}          
               />
         </Col>

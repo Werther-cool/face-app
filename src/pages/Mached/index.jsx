@@ -111,8 +111,8 @@ class MathcedTabel extends Component {
     },
     {
       title: '最近到访时间',
-      dataIndex: 'last_capture_at',
-      key: 'last_capture_at',
+      dataIndex: 'capture_at',
+      key: 'capture_at',
       width:"15%"
     },
     {

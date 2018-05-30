@@ -115,20 +115,20 @@ class PhotoModal extends React.Component {
          <Row type="flex" justify="space-between" className="row_top" >
         <Col span={2}><Button type="primary" onClick={()=>this.getReq()}>更新</Button></Col>
         <Col span={4} offset={14}>
-             <span>起始时间</span>&nbsp;&nbsp;
+            
              <DatePicker
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
-                placeholder="请选择时间"
+                placeholder="请选择起始时间"
                 onChange={this.setTime0.bind(this)}          
               />
         </Col>
         <Col span={4} >
-             <span>终止时间</span>&nbsp;&nbsp;
+            
              <DatePicker
                 showTime
                 format="YYYY-MM-DD HH:mm:ss"
-                placeholder="请选择时间"
+                placeholder="请选择终止时间"
                 onChange={this.setTime1.bind(this)}          
               />
         </Col>
