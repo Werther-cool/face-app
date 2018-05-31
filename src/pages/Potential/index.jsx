@@ -1,13 +1,13 @@
  import React, { Component } from 'react';
-import { Table,Button,Radio,Row,Col,Select,TimePicker,Modal ,DatePicker} from 'antd';
+import { Table,Button,Radio,Row,Col,Select,TimePicker,Modal ,DatePicker,Input} from 'antd';
 import PhotoMadal from "../../components/PhotoMadal";
 import axios from 'axios';
 import  "./mytable.css";
 import config from "../../util/config";
 import moment from 'moment';
+import qs from 'qs';
 
-
-
+const Search = Input.Search;
 const API = config.api
 const format = 'HH:mm';
 const RadioGroup = Radio.Group;
@@ -105,7 +105,27 @@ closeModal=()=>{
     visible:false
   })
 }
-
+ /* 搜索名字 */
+ searchName=(name)=>{
+  console.log(name);
+  axios({
+    method: 'post',
+    url:`${API.searchPot}`,
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify({keyword:name}),
+  })
+  .then(res => {
+    console.log(res.data.data);
+    let searchList  = res.data.data;
+    searchList.map((val,idx)=>{
+      val.key = val.id
+    })
+    
+    this.setState({
+      myData:searchList
+    })
+  }); 
+}
 
   render() {
     const columns = [{
@@ -140,15 +160,15 @@ closeModal=()=>{
     
       <Row type="flex" justify="space-between" className="row_top">
         <Col span={2}><Button type="primary" onClick={()=>this.getReq()}>更新</Button></Col>
-        {/* <Col >
-          <Select defaultValue="5" style={{ width: 120 }} onChange={(val)=>this.selectChange(val)}>
-            <Option  key={10} value="10">10分钟</Option>
-            <Option key={5} value="5">5分钟</Option>
-            <Option key={2} value="2">2分钟</Option>
-            <Option key={1} value="1">1分钟</Option>
-          </Select>
-        </Col> */}
-       <Col span={4} offset={14}>
+        <Col span={4}> 
+         <Search
+            placeholder="输入姓名搜索"
+            enterButton
+            onSearch={(value) => this.searchName(value)}
+            style={{ width: 200 }}
+          />
+        </Col>
+       <Col span={4} offset={10}>
             
              <DatePicker
                 showTime

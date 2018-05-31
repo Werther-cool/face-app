@@ -18,5 +18,9 @@ module.exports ={
     pushId:`${APIV1}/api/v1/yueyun/customer/push`,
      /* 推送全部 */
      pushAllId:`${APIV1}/api/v1/yueyun/customers/push`,
+     /* 会员mached 搜索名字 */
+     searchMached:`${APIV1}/api/v1/yueyun/customer/blur`,
+     /* 潜客 搜索名字 */
+     searchPot:`${APIV1}/api/v1/yueyun/activity/blur`
   }
 }
